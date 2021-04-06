@@ -88,8 +88,8 @@ class Hpx(CMakePackage, CudaPackage):
 
     depends_on('boost+filesystem', when='cxxstd=11')
     depends_on('boost+filesystem', when='cxxstd=14')
-    depends_on('boost+filesystem', when='^gcc@:8')
-    depends_on('boost+filesystem', when='^clang@:8')
+    depends_on('boost+filesystem', when='%gcc@:8')
+    depends_on('boost+filesystem', when='%clang@:8')
     depends_on('boost+system', when='boost@:1.70')
     depends_on('boost+program_options', when='@:1.5')
     depends_on('boost+regex', when='+tools')
