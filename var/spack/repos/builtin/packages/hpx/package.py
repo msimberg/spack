@@ -115,14 +115,12 @@ class Hpx(CMakePackage, CudaPackage, ROCmPackage):
     depends_on('papi', when='instrumentation=papi')
     depends_on('valgrind', when='instrumentation=valgrind')
 
-    # Restrictions for stable/master
-    with when("@master"):
+    # Restrictions for 1.8.X
+    with when("@1.8:"):
         conflicts("cxxstd=14")
         depends_on("cuda@11:", when="+cuda")
-
-    with when("@stable"):
-        conflicts("cxxstd=14")
-        depends_on("cuda@11:", when="+cuda")
+        conflicts('%gcc@:7')
+        conflicts('%clang@:8')
 
     # Restrictions for 1.7.X
     with when('@1.7:'):
