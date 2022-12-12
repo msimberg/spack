@@ -52,6 +52,7 @@ class CrayMpich(Package):
     @property
     def external_prefix(self):
         mpich_module = module("show", self.modname).splitlines()
+        print(mpich_module)
 
         for line in mpich_module:
             if "CRAY_MPICH_DIR" in line:

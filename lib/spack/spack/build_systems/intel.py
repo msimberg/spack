@@ -845,6 +845,7 @@ class IntelPackage(Package):
         elif (
             "^mpich@2:" in spec_root
             or "^cray-mpich" in spec_root
+            or "^cray-mpich-binary" in spec_root
             or "^mvapich2" in spec_root
             or "^intel-mpi" in spec_root
             or "^intel-oneapi-mpi" in spec_root
