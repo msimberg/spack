@@ -157,6 +157,7 @@ class Pika(CMakePackage, CudaPackage, ROCmPackage):
     patch("posix_stack_non_executable_0_13.patch", when="@0.13 platform=darwin")
     patch("posix_stack_non_executable_0_6_0_12.patch", when="@0.6:0.12 platform=darwin")
     patch("posix_stack_non_executable_0_1_0_5.patch", when="@:0.5 platform=darwin")
+    patch("cublas_cusolver_handle_index.patch", when="@0.22.0")
 
     # Fix missing template instantiation on macOS
     patch(

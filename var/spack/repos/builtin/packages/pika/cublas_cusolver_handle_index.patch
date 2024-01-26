@@ -1,0 +1,21 @@
+diff --git a/libs/pika/async_cuda/src/cuda_pool.cpp b/libs/pika/async_cuda/src/cuda_pool.cpp
+index 0b548ff2..2b594c3c 100644
+--- a/libs/pika/async_cuda/src/cuda_pool.cpp
++++ b/libs/pika/async_cuda/src/cuda_pool.cpp
+@@ -78,7 +78,7 @@ namespace pika::cuda::experimental {
+         // We use synchronized (locked) handles in a round-robin fashion for all other threads
+         else
+         {
+-            auto const t = synchronized_handle_index++;
++            auto const t = synchronized_handle_index.fetch_add(1, std::memory_order_relaxed) % concurrency;
+
+             std::unique_lock lock{handle_mutexes[t]};
+
+@@ -126,7 +126,7 @@ namespace pika::cuda::experimental {
+         // We use synchronized (locked) handles in a round-robin fashion for all other threads
+         else
+         {
+-            auto const t = synchronized_handle_index++;
++            auto const t = synchronized_handle_index.fetch_add(1, std::memory_order_relaxed) % concurrency;
+
+             std::unique_lock lock{handle_mutexes[t]};
