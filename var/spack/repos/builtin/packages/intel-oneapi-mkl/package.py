@@ -158,15 +158,15 @@ class IntelOneapiMkl(IntelOneApiLibraryPackage):
 
     @property
     def libs(self):
-        shared = self.spec.satisfies("+shared")
-
-        libs = self._find_mkl_libs(shared)
-
+        mkl_libs = self._find_mkl_libs()
         system_libs = find_system_libraries(["libpthread", "libm", "libdl"])
-        if shared:
-            return libs + system_libs
+        if "threads=openmp" in self.spec:
+            system_libs += self.openmp_libs
+
+        if "+shared" in self.spec:
+            return mkl_libs + system_libs
         else:
-            return IntelOneApiStaticLibraryList(libs, system_libs)
+            return IntelOneApiStaticLibraryList(mkl_libs, system_libs)
 
     def setup_dependent_build_environment(self, env, dependent_spec):
         # Only if environment modifications are desired (default is +envmods)
@@ -177,7 +177,7 @@ class IntelOneapiMkl(IntelOneApiLibraryPackage):
             env.append_path("PKG_CONFIG_PATH", self.component_prefix.lib.pkgconfig)
             env.append_path("PKG_CONFIG_PATH", self.component_prefix.tools.pkgconfig)
 
-    def _find_mkl_libs(self, shared):
+    def _find_mkl_libs(self):
         libs = []
 
         if self.spec.satisfies("+cluster"):
@@ -228,7 +228,7 @@ class IntelOneapiMkl(IntelOneApiLibraryPackage):
 
         # resolved_libs is populated as follows
         # MKL-related + MPI-related + threading-related
-        resolved_libs = find_libraries(libs, lib_path, shared=shared)
+        resolved_libs = find_libraries(libs, lib_path, shared=("+shared" in self.spec))
 
         # Add MPI libraries for cluster support. If MPI is not in the
         # spec, then MKL is externally installed and application must
