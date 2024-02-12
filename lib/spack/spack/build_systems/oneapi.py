@@ -222,11 +222,25 @@ class IntelOneApiLibraryPackage(IntelOneApiPackage):
             omp_libs += LibraryList(omp_lib_path.strip())
 
         elif "%clang" in self.spec:
+            libomp = f"libomp.{dso_suffix}"
+            omp_lib_path = libomp
             with self.compiler.compiler_environment():
                 omp_lib_path = Executable(self.compiler.cc)(
-                    "--print-file-name", "libomp.%s" % dso_suffix, output=str
-                )
-            omp_libs += LibraryList(omp_lib_path.strip())
+                    "--print-file-name", libomp, output=str
+                ).strip()
+
+            # --print-file-name may return libomp unchanged, without an
+            # absolute path. In that case check if we can find libomp in the
+            # compiler's lib directory instead. If we can't find it there we
+            # leave it as a relative path.
+            # TODO: Or leave it empty and error out below?
+            if omp_lib_path == libomp:
+                compiler_root = os.path.dirname(os.path.dirname(os.path.realpath(self.compiler.cc)))
+                omp_lib_path_compiler = os.path.join(compiler_root, "lib", libomp)
+                if os.path.isfile(omp_lib_path_compiler):
+                    omp_lib_path = omp_lib_path_compiler
+
+            omp_libs = LibraryList(omp_lib_path)
 
         if len(omp_libs) < 1:
             raise ValueError("Cannot locate OpenMP libraries.")
