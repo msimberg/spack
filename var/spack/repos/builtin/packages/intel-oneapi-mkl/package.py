@@ -126,8 +126,8 @@ class IntelOneapiMkl(IntelOneApiLibraryPackage):
     )
 
     requires(
-        "%clang",
         "%gcc",
+        "%clang",
         "%intel",
         "%oneapi",
         policy="one_of",
