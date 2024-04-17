@@ -115,6 +115,7 @@ class Pika(CMakePackage, CudaPackage, ROCmPackage):
     # https://github.com/pika-org/pika/issues/686
     conflicts("^fmt@10:", when="@:0.15 +cuda")
     conflicts("^fmt@10:", when="@:0.15 +rocm")
+    depends_on("spdlog@1.9.2:", when="@main:")
     depends_on("hwloc@1.11.5:")
 
     depends_on("gperftools", when="malloc=tcmalloc")
