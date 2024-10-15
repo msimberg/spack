@@ -94,7 +94,7 @@ class DlaFuture(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("pika +cuda", when="+cuda")
     depends_on("pika +rocm", when="+rocm")
 
-    conflicts("^pika cxxstd=20", when="+cuda")
+    conflicts("^pika cxxstd=20", when="@:0.6 +cuda")
 
     depends_on("whip +cuda", when="+cuda")
     depends_on("whip +rocm", when="+rocm")
