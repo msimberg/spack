@@ -228,6 +228,7 @@ class Pika(CMakePackage, CudaPackage, ROCmPackage):
             self.define_from_variant("PIKA_WITH_GENERIC_CONTEXT_COROUTINES", "generic_coroutines"),
             self.define("BOOST_ROOT", spec["boost"].prefix),
             self.define("HWLOC_ROOT", spec["hwloc"].prefix),
+            self.define("PIKA_WITH_SPINLOCK_DEADLOCK_DETECTION", True),
         ]
 
         if spec.satisfies("@0.14:"):
