@@ -1553,7 +1553,7 @@ class PackageBase(WindowsRPath, PackageViewMixin, metaclass=PackageMeta):
         Creates a stage directory and downloads the tarball for this package.
         Working directory will be set to the stage directory.
         """
-        if not self.has_code or self.spec.external:
+        if self.spec.external:
             tty.debug("No fetch required for {0}".format(self.name))
             return
 
@@ -1627,12 +1627,12 @@ class PackageBase(WindowsRPath, PackageViewMixin, metaclass=PackageMeta):
         self.stage.create()
 
         # Fetch/expand any associated code.
-        if self.has_code and not self.spec.external:
+        if not self.spec.external:
             self.do_fetch(mirror_only)
             self.stage.expand_archive()
-        else:
-            # Support for post-install hooks requires a stage.source_path
-            fsys.mkdirp(self.stage.source_path)
+
+        # Support for post-install hooks requires a stage.source_path
+        fsys.mkdirp(self.stage.source_path)
 
     def do_patch(self):
         """Applies patches if they haven't been applied already."""
