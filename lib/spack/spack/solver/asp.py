@@ -290,9 +290,9 @@ def all_libcs() -> Set[spack.spec.Spec]:
     """Return a set of all libc specs targeted by any configured compiler. If none, fall back to
     libc determined from the current Python process if dynamically linked."""
 
-    libcs = {
-        c.default_libc for c in all_compilers_in_config(spack.config.CONFIG) if c.default_libc
-    }
+    s = spack.spec.Spec("glibc@=2.31")
+    s.external_path = "/usr"
+    libcs = { s }
 
     if libcs:
         return libcs

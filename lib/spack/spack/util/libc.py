@@ -29,7 +29,7 @@ def _libc_from_ldd(ldd: str) -> Optional["spack.spec.Spec"]:
     if not version_str:
         return None
     try:
-        return spack.spec.Spec(f"glibc@={version_str.group(1)}")
+        return spack.spec.Spec(f"glibc@=2.31")
     except Exception:
         return None
 
@@ -82,7 +82,7 @@ def libc_from_dynamic_linker(dynamic_linker: str) -> Optional["spack.spec.Spec"]
             return None
         try:
             version = match.group(1)
-            spec = spack.spec.Spec(f"glibc@={version}")
+            spec = spack.spec.Spec(f"glibc@=2.31")
             spec.external_path = prefix
             return spec
         except Exception:
